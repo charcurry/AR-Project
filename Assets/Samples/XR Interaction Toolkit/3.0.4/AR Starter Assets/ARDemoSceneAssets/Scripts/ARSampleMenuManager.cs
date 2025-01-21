@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.AR.Inputs;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Readers;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
@@ -240,7 +241,14 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.ARStarterAssets
 
         void DeleteAllObjects()
         {
-            Debug.Log(m_ObjectSpawner);
+            XRGrabInteractable[] xRGrabInteractables;
+
+            xRGrabInteractables = m_ObjectSpawner.gameObject.GetComponentsInChildren<XRGrabInteractable>();
+
+            foreach (XRGrabInteractable xRGrabInteractable in xRGrabInteractables)
+            {
+                Destroy(xRGrabInteractable.gameObject);
+            }
         }
     }
 }
