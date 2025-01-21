@@ -42,6 +42,19 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.ARStarterAssets
         }
 
         [SerializeField]
+        [Tooltip("Button that deletes all objects.")]
+        Button m_DeleteAllButton;
+
+        /// <summary>
+        /// Button that deletes all objects.
+        /// </summary>
+        public Button deleteAllButton
+        {
+            get => m_DeleteAllButton;
+            set => m_DeleteAllButton = value;
+        }
+
+        [SerializeField]
         [Tooltip("The menu with all the creatable objects.")]
         GameObject m_ObjectMenu;
 
@@ -127,6 +140,7 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.ARStarterAssets
             m_CreateButton.onClick.AddListener(ShowMenu);
             m_CancelButton.onClick.AddListener(HideMenu);
             m_DeleteButton.onClick.AddListener(DeleteFocusedObject);
+            m_DeleteAllButton.onClick.AddListener(DeleteAllObjects);
         }
 
         void OnDisable()
@@ -136,6 +150,7 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.ARStarterAssets
             m_CreateButton.onClick.RemoveListener(ShowMenu);
             m_CancelButton.onClick.RemoveListener(HideMenu);
             m_DeleteButton.onClick.RemoveListener(DeleteFocusedObject);
+            m_DeleteAllButton.onClick.RemoveListener(DeleteAllObjects);
         }
 
         void Start()
@@ -221,6 +236,11 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.ARStarterAssets
             {
                 Destroy(currentFocusedObject.transform.gameObject);
             }
+        }
+
+        void DeleteAllObjects()
+        {
+            Debug.Log(m_ObjectSpawner);
         }
     }
 }

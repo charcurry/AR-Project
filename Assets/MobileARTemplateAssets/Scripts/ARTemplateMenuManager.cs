@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Readers;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using UnityEngine.XR.Interaction.Toolkit.Samples.ARStarterAssets;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
@@ -41,6 +42,19 @@ public class ARTemplateMenuManager : MonoBehaviour
     {
         get => m_DeleteButton;
         set => m_DeleteButton = value;
+    }
+
+    [SerializeField]
+    [Tooltip("Button that deletes all objects.")]
+    Button m_DeleteAllButton;
+
+    /// <summary>
+    /// Button that deletes all objects.
+    /// </summary>
+    public Button deleteAllButton
+    {
+        get => m_DeleteAllButton;
+        set => m_DeleteAllButton = value;
     }
 
     [SerializeField]
@@ -228,6 +242,7 @@ public class ARTemplateMenuManager : MonoBehaviour
         m_CreateButton.onClick.AddListener(ShowMenu);
         m_CancelButton.onClick.AddListener(HideMenu);
         m_DeleteButton.onClick.AddListener(DeleteFocusedObject);
+        m_DeleteAllButton.onClick.AddListener(DeleteAllObjects);
         m_PlaneManager.planesChanged += OnPlaneChanged;
     }
 
@@ -240,6 +255,7 @@ public class ARTemplateMenuManager : MonoBehaviour
         m_CreateButton.onClick.RemoveListener(ShowMenu);
         m_CancelButton.onClick.RemoveListener(HideMenu);
         m_DeleteButton.onClick.RemoveListener(DeleteFocusedObject);
+        m_DeleteAllButton.onClick.RemoveListener(DeleteAllObjects);
         m_PlaneManager.planesChanged -= OnPlaneChanged;
     }
 
@@ -295,6 +311,7 @@ public class ARTemplateMenuManager : MonoBehaviour
         {
             m_IsPointerOverUI = false;
             m_CreateButton.gameObject.SetActive(true);
+            m_DeleteAllButton.gameObject.SetActive(true);
             m_DeleteButton.gameObject.SetActive(m_InteractionGroup?.focusInteractable != null);
         }
 
@@ -429,6 +446,18 @@ public class ARTemplateMenuManager : MonoBehaviour
         if (currentFocusedObject != null)
         {
             Destroy(currentFocusedObject.transform.gameObject);
+        }
+    }
+
+    void DeleteAllObjects()
+    {
+        XRGrabInteractable[] xRGrabInteractables;
+
+        xRGrabInteractables = m_ObjectSpawner.gameObject.GetComponentsInChildren<XRGrabInteractable>();
+
+        foreach (XRGrabInteractable xRGrabInteractable in xRGrabInteractables)
+        {
+            Destroy(xRGrabInteractable.gameObject);
         }
     }
 
